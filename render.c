@@ -106,12 +106,12 @@ void	ft_hook_julia(void *para)
 		mlx_close_window(fractol->mlx);
 	if (mlx_is_key_down(fractol->mlx, MLX_KEY_UP))
 	{
-		fractol->shift_y -= (0.1 * fractol->zoom);
+		fractol->shift_y += (0.1 * fractol->zoom);
 		fractol_render_julia(fractol);
 	}
 	if (mlx_is_key_down(fractol->mlx, MLX_KEY_DOWN))
 	{
-		fractol->shift_y += (0.1 * fractol->zoom);
+		fractol->shift_y -= (0.1 * fractol->zoom);
 		fractol_render_julia(fractol);
 	}
 	if (mlx_is_key_down(fractol->mlx, MLX_KEY_LEFT))
