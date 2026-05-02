@@ -43,29 +43,15 @@ int32_t	get_color(int i, int max)
 	int	r;
 	int	g;
 	int	b;
+	int	a;
 
 	if (i == max)
 		return (0x000000FF);
-	r = (i * 7) % 256;
-	g = (i * 3) % 256;
-	b = (i * 11) % 256;
-	return (r << 24 | g << 16 | b << 8 | 255);
-}
-
-static void	handle_move(t_fractol *fractol)
-{
-	double	step;
-
-	step = 0.1 * fractol->zoom;
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_UP))
-		fractol->shift_y -= step;
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_DOWN))
-		fractol->shift_y += step;
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_LEFT))
-		fractol->shift_x -= step;
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_RIGHT))
-		fractol->shift_x += step;
-    fractol_render(fractol);
+	r = (i * 3) % 256;
+	g = (i * 5) % 256;
+	b = (i * 8) % 256;
+	a = 255;
+	return (r << 24 | g << 16 | b << 8 | a);
 }
 
 void	ft_hook(void *para)
@@ -75,11 +61,24 @@ void	ft_hook(void *para)
 	fractol = (t_fractol *)para;
 	if (mlx_is_key_down(fractol->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(fractol->mlx);
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_UP)
-		|| mlx_is_key_down(fractol->mlx, MLX_KEY_DOWN)
-		|| mlx_is_key_down(fractol->mlx, MLX_KEY_LEFT)
-		|| mlx_is_key_down(fractol->mlx, MLX_KEY_RIGHT))
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_UP))
 	{
-		handle_move(fractol);
+		fractol->shift_y -= (0.1 * fractol->zoom);
+		fractol_render(fractol);
+	}
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_DOWN))
+	{
+		fractol->shift_y += (0.1 * fractol->zoom);
+		fractol_render(fractol);
+	}
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_LEFT))
+	{
+		fractol->shift_x -= (0.1 * fractol->zoom);
+		fractol_render(fractol);
+	}
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_RIGHT))
+	{
+		fractol->shift_x += (0.1 * fractol->zoom);
+		fractol_render(fractol);
 	}
 }

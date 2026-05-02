@@ -2,14 +2,14 @@ NAME = fractol
 
 CC = cc
 
-CCFLAG = -Wall -Wextra -Werror
+CCFLAG = -Wall -Wextra -Werror -O2
 
 MLX_DIR	= ./MLX42
 MLX_LIB	= $(MLX_DIR)/build/libmlx42.a
 HEADERS	= -I. -I$(MLX_DIR)/include
 LIBS	= $(MLX_LIB) -lglfw -L"/opt/homebrew/lib" -framework Cocoa -framework OpenGL -framework IOKit
 
-SRC = init.c  main.c  math.c  utlis.c render.c
+SRC = init.c  main.c  math.c  utlis.c render.c render2.c
 
 OBJ = $(SRC:.c=.o)
 

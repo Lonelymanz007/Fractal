@@ -63,8 +63,13 @@ int32_t			get_color(int i, int max);
 void			ft_hook(void *para);
 
 // render
-void	    render_pixels(int x, int y, t_fractol *fractol);
-void	    fractol_render(t_fractol *fractol);
-void	    ft_scroll_hook(double xdelta, double ydelta, void *param);
+void			fractol_render(t_fractol *fractol);
+void			ft_scroll_hook(double xdelta, double ydelta, void *param);
+void			render_julia(int x, int y, t_fractol *fractol);
+void			fractol_render_julia(t_fractol *fractol);
+void			ft_hook_julia(void *para);
+
+// render2.c
+void			render_pixels(int x, int y, t_fractol *fractol);
 
 #endif

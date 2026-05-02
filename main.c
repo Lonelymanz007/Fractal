@@ -12,8 +12,25 @@
 
 #include "fractol.h"
 
-static void	start_fractol(t_fractol *fractol)
+int	main(int ac, char **av)
 {
+	t_fractol	fractol;
+
+	if ((ac == 2 && ft_strncmp(av[1], "mandelbrot", 10) == 0) || (ac == 4
+			&& ft_strncmp(av[1], "julia", 5) == 0))
+	{
+		if (ft_strncmp(av[1], "mandelbrot", 10) == 0)
+			for_mandelbrot(&fractol);
+		else if (ft_strncmp(av[1], "julia", 5) == 0)
+			for_julia(&fractol, av);
+	}
+	else
+		ft_putstr_fd("Please try again :( \n", 1);
+}
+
+void	for_mandelbrot(t_fractol *fractol)
+{
+	fractol->name = "mandelbrot";
 	fractol_init(fractol);
 	set_data_init(fractol);
 	fractol_render(fractol);
@@ -22,22 +39,15 @@ static void	start_fractol(t_fractol *fractol)
 	mlx_loop(fractol->mlx);
 }
 
-int	main(int ac, char **av)
+void	for_julia(t_fractol *fractol, char *av[])
 {
-	t_fractol	fractol;
-
-	if (ac == 2 && ft_strncmp(av[1], "mandelbrot", 10) == 0)
-	{
-		fractol.name = "mandelbrot";
-		start_fractol(&fractol);
-	}
-	else if (ac == 4 && ft_strncmp(av[1], "julia", 5) == 0)
-	{
-		fractol.name = "julia";
-		fractol.real = ft_atoi(av[2]);
-		fractol.i = ft_atoi(av[3]);
-		start_fractol(&fractol);
-	}
-	else
-		ft_putstr_fd("Please try again :( \n", 1);
+	fractol->name = "julia";
+	fractol->real = ft_atoi(av[2]);
+	fractol->i = ft_atoi(av[3]);
+	fractol_init(fractol);
+	set_data_init(fractol);
+	fractol_render_julia(fractol);
+	mlx_loop_hook(fractol->mlx, ft_hook_julia, fractol);
+	mlx_scroll_hook(fractol->mlx, ft_scroll_hook, fractol);
+	mlx_loop(fractol->mlx);
 }

@@ -75,7 +75,6 @@ double	ft_atoi(char *str)
 	sign = 1.0;
 	ans = 0.0;
 	fraction = get_decimal(str);
-    
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '-' || str[i] == '+')
