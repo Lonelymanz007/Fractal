@@ -60,14 +60,11 @@ double			map(double unscaled_num, double new_min, double new_max,
 void			fractol_init(t_fractol *fractol);
 void			set_data_init(t_fractol *fractol);
 int32_t			get_color(int i, int max);
-void			render_pixels(int x, int y, t_fractol *fractol);
 void			ft_hook(void *para);
 
 // render
-void			fractol_render(t_fractol *fractol);
-void			ft_scroll_hook(double xdelta, double ydelta, void *param);
-void			render_julia(int x, int y, t_fractol *fractol);
-void			fractol_render_julia(t_fractol *fractol);
-void			ft_hook_julia(void *para);
+void	    render_pixels(int x, int y, t_fractol *fractol);
+void	    fractol_render(t_fractol *fractol);
+void	    ft_scroll_hook(double xdelta, double ydelta, void *param);
 
 #endif

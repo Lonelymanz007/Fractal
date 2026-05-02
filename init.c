@@ -43,38 +43,29 @@ int32_t	get_color(int i, int max)
 	int	r;
 	int	g;
 	int	b;
-	int	a;
 
 	if (i == max)
 		return (0x000000FF);
-	r = (i * 3) % 256;
-	g = (i * 5) % 256;
-	b = (i * 8) % 256;
-	a = 255;
-	return (r << 24 | g << 16 | b << 8 | a);
+	r = (i * 7) % 256;
+	g = (i * 3) % 256;
+	b = (i * 11) % 256;
+	return (r << 24 | g << 16 | b << 8 | 255);
 }
 
-void	render_pixels(int x, int y, t_fractol *fractol)
+static void	handle_move(t_fractol *fractol)
 {
-	t_complex	c;
-	t_complex	z;
-	uint32_t	color;
-	int			i;
+	double	step;
 
-	i = 0;
-	c.real = (map(x, -2.0, 2.0, WIDTH) * fractol->zoom) + fractol->shift_x;
-	c.i = (map(y, 2.0, -2.0, HEIGHT) * fractol->zoom) + fractol->shift_y;
-	z.real = 0.0;
-	z.i = 0.0;
-	while (i < fractol->iterations)
-	{
-		z = handle_z(z, c);
-		if ((z.real * z.real) + (z.i * z.i) > 4.0)
-			break ;
-		i++;
-	}
-	color = get_color(i, fractol->iterations);
-	mlx_put_pixel(fractol->img, x, y, color);
+	step = 0.1 * fractol->zoom;
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_UP))
+		fractol->shift_y -= step;
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_DOWN))
+		fractol->shift_y += step;
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_LEFT))
+		fractol->shift_x -= step;
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_RIGHT))
+		fractol->shift_x += step;
+    fractol_render(fractol);
 }
 
 void	ft_hook(void *para)
@@ -84,24 +75,11 @@ void	ft_hook(void *para)
 	fractol = (t_fractol *)para;
 	if (mlx_is_key_down(fractol->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(fractol->mlx);
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_UP))
+	if (mlx_is_key_down(fractol->mlx, MLX_KEY_UP)
+		|| mlx_is_key_down(fractol->mlx, MLX_KEY_DOWN)
+		|| mlx_is_key_down(fractol->mlx, MLX_KEY_LEFT)
+		|| mlx_is_key_down(fractol->mlx, MLX_KEY_RIGHT))
 	{
-		fractol->shift_y -= (0.1 * fractol->zoom);
-		fractol_render(fractol);
-	}
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_DOWN))
-	{
-		fractol->shift_y += (0.1 * fractol->zoom);
-		fractol_render(fractol);
-	}
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_LEFT))
-	{
-		fractol->shift_x -= (0.1 * fractol->zoom);
-		fractol_render(fractol);
-	}
-	if (mlx_is_key_down(fractol->mlx, MLX_KEY_RIGHT))
-	{
-		fractol->shift_x += (0.1 * fractol->zoom);
-		fractol_render(fractol);
+		handle_move(fractol);
 	}
 }
